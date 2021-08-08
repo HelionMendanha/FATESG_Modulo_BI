@@ -1,0 +1,407 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<workflow>
+  <name>Julho31\Fisico</name>
+  <name_sync_with_filename>Y</name_sync_with_filename>
+  <description/>
+  <extended_description/>
+  <workflow_version/>
+  <created_user>-</created_user>
+  <created_date>2021/07/31 15:36:00.215</created_date>
+  <modified_user>-</modified_user>
+  <modified_date>2021/07/31 15:36:00.215</modified_date>
+  <parameters>
+    </parameters>
+  <actions>
+    <action>
+      <name>Start</name>
+      <description/>
+      <type>SPECIAL</type>
+      <attributes/>
+      <repeat>N</repeat>
+      <schedulerType>0</schedulerType>
+      <intervalSeconds>0</intervalSeconds>
+      <intervalMinutes>60</intervalMinutes>
+      <hour>12</hour>
+      <minutes>0</minutes>
+      <weekDay>1</weekDay>
+      <DayOfMonth>1</DayOfMonth>
+      <parallel>N</parallel>
+      <xloc>50</xloc>
+      <yloc>50</yloc>
+      <attributes_hac/>
+    </action>
+    <action>
+      <name>Check DB connections</name>
+      <description/>
+      <type>CHECK_DB_CONNECTIONS</type>
+      <attributes/>
+      <connections>
+        <connection>
+          <name>Mysql_MBA_Dimensional</name>
+          <waitfor>0</waitfor>
+          <waittime>millisecond</waittime>
+        </connection>
+        <connection>
+          <name>Mysql_MBA_Fisico</name>
+          <waitfor>0</waitfor>
+          <waittime>millisecond</waittime>
+        </connection>
+        <connection>
+          <name>Mysql_MBA_Stage</name>
+          <waitfor>0</waitfor>
+          <waittime>millisecond</waittime>
+        </connection>
+      </connections>
+      <parallel>N</parallel>
+      <xloc>192</xloc>
+      <yloc>48</yloc>
+      <attributes_hac/>
+    </action>
+    <action>
+      <name>FisicoProduct.hpl</name>
+      <description/>
+      <type>PIPELINE</type>
+      <attributes/>
+      <filename>${PROJECT_HOME}/Julho31\FisicoProduct.hpl</filename>
+      <params_from_previous>N</params_from_previous>
+      <exec_per_row>N</exec_per_row>
+      <clear_rows>N</clear_rows>
+      <clear_files>N</clear_files>
+      <set_logfile>N</set_logfile>
+      <logfile/>
+      <logext/>
+      <add_date>N</add_date>
+      <add_time>N</add_time>
+      <loglevel>Basic</loglevel>
+      <set_append_logfile>N</set_append_logfile>
+      <wait_until_finished>Y</wait_until_finished>
+      <follow_abort_remote>N</follow_abort_remote>
+      <create_parent_folder>N</create_parent_folder>
+      <run_configuration>local</run_configuration>
+      <parameters>
+        <pass_all_parameters>Y</pass_all_parameters>
+      </parameters>
+      <parallel>N</parallel>
+      <xloc>416</xloc>
+      <yloc>48</yloc>
+      <attributes_hac/>
+    </action>
+    <action>
+      <name>FisicoOffices.hpl</name>
+      <description/>
+      <type>PIPELINE</type>
+      <attributes/>
+      <filename>${PROJECT_HOME}/Julho31\FisicoOffices.hpl</filename>
+      <params_from_previous>N</params_from_previous>
+      <exec_per_row>N</exec_per_row>
+      <clear_rows>N</clear_rows>
+      <clear_files>N</clear_files>
+      <set_logfile>N</set_logfile>
+      <logfile/>
+      <logext/>
+      <add_date>N</add_date>
+      <add_time>N</add_time>
+      <loglevel>Basic</loglevel>
+      <set_append_logfile>N</set_append_logfile>
+      <wait_until_finished>Y</wait_until_finished>
+      <follow_abort_remote>N</follow_abort_remote>
+      <create_parent_folder>N</create_parent_folder>
+      <run_configuration>local</run_configuration>
+      <parameters>
+        <pass_all_parameters>Y</pass_all_parameters>
+      </parameters>
+      <parallel>N</parallel>
+      <xloc>560</xloc>
+      <yloc>48</yloc>
+      <attributes_hac/>
+    </action>
+    <action>
+      <name>FisicoEmployees.hpl</name>
+      <description/>
+      <type>PIPELINE</type>
+      <attributes/>
+      <filename>${PROJECT_HOME}/Julho31\FisicoEmployees.hpl</filename>
+      <params_from_previous>N</params_from_previous>
+      <exec_per_row>N</exec_per_row>
+      <clear_rows>N</clear_rows>
+      <clear_files>N</clear_files>
+      <set_logfile>N</set_logfile>
+      <logfile/>
+      <logext/>
+      <add_date>N</add_date>
+      <add_time>N</add_time>
+      <loglevel>Basic</loglevel>
+      <set_append_logfile>N</set_append_logfile>
+      <wait_until_finished>Y</wait_until_finished>
+      <follow_abort_remote>N</follow_abort_remote>
+      <create_parent_folder>N</create_parent_folder>
+      <run_configuration>local</run_configuration>
+      <parameters>
+        <pass_all_parameters>Y</pass_all_parameters>
+      </parameters>
+      <parallel>N</parallel>
+      <xloc>720</xloc>
+      <yloc>48</yloc>
+      <attributes_hac/>
+    </action>
+    <action>
+      <name>SQL - Check Database</name>
+      <description/>
+      <type>SQL</type>
+      <attributes/>
+      <sql>DROP SCHEMA mba_fisico;
+
+CREATE SCHEMA mba_fisico;
+
+CREATE TABLE mba_fisico.offices ( 
+	officecode           varchar(100)  NOT NULL  ,
+	city                 varchar(100)    ,
+	state                varchar(100)    ,
+	country              varchar(100)    ,
+	CONSTRAINT pk_offices PRIMARY KEY ( officecode )
+ ) engine=InnoDB;
+
+ALTER TABLE mba_fisico.offices COMMENT 'Loja da venda
+• Código da loja – Código identificador da loja
+• Cidade – Cidade no qual a loja está instalada
+• Território – Território no qual a loja está instalada
+• Pais – Pais no qual a loja está instalada ';
+
+CREATE TABLE mba_fisico.product ( 
+	productcode          varchar(15)  NOT NULL  ,
+	productname          varchar(100)    ,
+	productline          varchar(100)    ,
+	buyprice             varchar(100)    ,
+	CONSTRAINT pk_product PRIMARY KEY ( productcode )
+ ) engine=InnoDB;
+
+ALTER TABLE mba_fisico.product COMMENT 'Produto
+• Nome – Nome do produto
+• Linha – Linha
+• Preço – Preço de venda do produto';
+
+CREATE TABLE mba_fisico.employees ( 
+	employeenumber       int  NOT NULL  ,
+	fullname             varchar(100)    ,
+	officecode           varchar(10)    ,
+	CONSTRAINT pk_employees PRIMARY KEY ( employeenumber )
+ ) engine=InnoDB;
+
+CREATE INDEX idx_employees ON mba_fisico.employees ( officecode );
+
+ALTER TABLE mba_fisico.employees COMMENT 'Empregado
+• Código – Código identificador/matricula do funcionário
+• Nome – Nome do empregado ';
+
+CREATE TABLE mba_fisico.customers ( 
+	customernumber       int  NOT NULL  ,
+	city                 varchar(50)    ,
+	state                varchar(50)    ,
+	employeenumber       int    ,
+	CONSTRAINT pk_customers PRIMARY KEY ( customernumber )
+ ) engine=InnoDB;
+
+CREATE INDEX idx_customers ON mba_fisico.customers ( employeenumber );
+
+ALTER TABLE mba_fisico.customers COMMENT 'Cliente
+• Cidade – Cidade no qual o cliente reside
+• Estado - Estado no qual o cliente reside
+';
+
+CREATE TABLE mba_fisico.orders ( 
+	ordernumber          varchar(100)  NOT NULL  ,
+	productcode          varchar(15)    ,
+	customernumber       int    ,
+	orderdate            date    ,
+	quantityordered      varchar(100)    ,
+	priceeach            varchar(100)    ,
+	requireddate         date    ,
+	shippeddate          date    
+ ) engine=InnoDB;
+
+CREATE INDEX idx_orders ON mba_fisico.orders ( ordernumber, productcode );
+
+CREATE INDEX idx_orders_0 ON mba_fisico.orders ( productcode );
+
+CREATE INDEX idx_orders_1 ON mba_fisico.orders ( customernumber );
+
+ALTER TABLE mba_fisico.orders COMMENT 'Fato
+• VENDAS
+• Quantidade Vendida – Quantidade do produto
+• Preço Venda – Preço de venda de cada produto';
+
+ALTER TABLE mba_fisico.customers ADD CONSTRAINT fk_customers FOREIGN KEY ( employeenumber ) REFERENCES mba_fisico.employees( employeenumber ) ON DELETE NO ACTION ON UPDATE NO ACTION;
+
+ALTER TABLE mba_fisico.employees ADD CONSTRAINT fk_employees FOREIGN KEY ( officecode ) REFERENCES mba_fisico.offices( officecode ) ON DELETE NO ACTION ON UPDATE NO ACTION;
+
+ALTER TABLE mba_fisico.orders ADD CONSTRAINT fk_orders FOREIGN KEY ( productcode ) REFERENCES mba_fisico.product( productcode ) ON DELETE NO ACTION ON UPDATE NO ACTION;
+
+ALTER TABLE mba_fisico.orders ADD CONSTRAINT fk_orders_0 FOREIGN KEY ( customernumber ) REFERENCES mba_fisico.customers( customernumber ) ON DELETE NO ACTION ON UPDATE NO ACTION;
+
+</sql>
+      <useVariableSubstitution>F</useVariableSubstitution>
+      <sqlfromfile>F</sqlfromfile>
+      <sqlfilename/>
+      <sendOneStatement>F</sendOneStatement>
+      <connection>Mysql_MBA_Fisico</connection>
+      <parallel>N</parallel>
+      <xloc>304</xloc>
+      <yloc>48</yloc>
+      <attributes_hac/>
+    </action>
+    <action>
+      <name>FisicoCustomers.hpl</name>
+      <description/>
+      <type>PIPELINE</type>
+      <attributes/>
+      <filename>${PROJECT_HOME}/Julho31\FisicoCustomers.hpl</filename>
+      <params_from_previous>N</params_from_previous>
+      <exec_per_row>N</exec_per_row>
+      <clear_rows>N</clear_rows>
+      <clear_files>N</clear_files>
+      <set_logfile>N</set_logfile>
+      <logfile/>
+      <logext/>
+      <add_date>N</add_date>
+      <add_time>N</add_time>
+      <loglevel>Basic</loglevel>
+      <set_append_logfile>N</set_append_logfile>
+      <wait_until_finished>Y</wait_until_finished>
+      <follow_abort_remote>N</follow_abort_remote>
+      <create_parent_folder>N</create_parent_folder>
+      <run_configuration>local</run_configuration>
+      <parameters>
+        <pass_all_parameters>Y</pass_all_parameters>
+      </parameters>
+      <parallel>N</parallel>
+      <xloc>896</xloc>
+      <yloc>48</yloc>
+      <attributes_hac/>
+    </action>
+    <action>
+      <name>FisicoOrders.hpl</name>
+      <description/>
+      <type>PIPELINE</type>
+      <attributes/>
+      <filename>${PROJECT_HOME}/Julho31\FisicoOrders.hpl</filename>
+      <params_from_previous>N</params_from_previous>
+      <exec_per_row>N</exec_per_row>
+      <clear_rows>N</clear_rows>
+      <clear_files>N</clear_files>
+      <set_logfile>N</set_logfile>
+      <logfile/>
+      <logext/>
+      <add_date>N</add_date>
+      <add_time>N</add_time>
+      <loglevel>Basic</loglevel>
+      <set_append_logfile>N</set_append_logfile>
+      <wait_until_finished>Y</wait_until_finished>
+      <follow_abort_remote>N</follow_abort_remote>
+      <create_parent_folder>N</create_parent_folder>
+      <run_configuration>local</run_configuration>
+      <parameters>
+        <pass_all_parameters>Y</pass_all_parameters>
+      </parameters>
+      <parallel>N</parallel>
+      <xloc>896</xloc>
+      <yloc>304</yloc>
+      <attributes_hac/>
+    </action>
+    <action>
+      <name>Success</name>
+      <description/>
+      <type>SUCCESS</type>
+      <attributes/>
+      <parallel>N</parallel>
+      <xloc>64</xloc>
+      <yloc>304</yloc>
+      <attributes_hac/>
+    </action>
+  </actions>
+  <hops>
+    <hop>
+      <from>FisicoProduct.hpl</from>
+      <to>FisicoOffices.hpl</to>
+      <enabled>Y</enabled>
+      <evaluation>Y</evaluation>
+      <unconditional>N</unconditional>
+    </hop>
+    <hop>
+      <from>FisicoOffices.hpl</from>
+      <to>FisicoEmployees.hpl</to>
+      <enabled>Y</enabled>
+      <evaluation>Y</evaluation>
+      <unconditional>N</unconditional>
+    </hop>
+    <hop>
+      <from>Start</from>
+      <to>Check DB connections</to>
+      <enabled>Y</enabled>
+      <evaluation>Y</evaluation>
+      <unconditional>Y</unconditional>
+    </hop>
+    <hop>
+      <from>Check DB connections</from>
+      <to>SQL - Check Database</to>
+      <enabled>Y</enabled>
+      <evaluation>Y</evaluation>
+      <unconditional>N</unconditional>
+    </hop>
+    <hop>
+      <from>SQL - Check Database</from>
+      <to>FisicoProduct.hpl</to>
+      <enabled>Y</enabled>
+      <evaluation>Y</evaluation>
+      <unconditional>N</unconditional>
+    </hop>
+    <hop>
+      <from>FisicoEmployees.hpl</from>
+      <to>FisicoCustomers.hpl</to>
+      <enabled>Y</enabled>
+      <evaluation>Y</evaluation>
+      <unconditional>N</unconditional>
+    </hop>
+    <hop>
+      <from>FisicoCustomers.hpl</from>
+      <to>FisicoOrders.hpl</to>
+      <enabled>Y</enabled>
+      <evaluation>Y</evaluation>
+      <unconditional>N</unconditional>
+    </hop>
+    <hop>
+      <from>FisicoOrders.hpl</from>
+      <to>Success</to>
+      <enabled>Y</enabled>
+      <evaluation>Y</evaluation>
+      <unconditional>N</unconditional>
+    </hop>
+  </hops>
+  <notepads>
+    <notepad>
+      <note>Integrantes do grupo:
+    Helion Mendanha,
+    João Paulo Xavier,
+    Leonardo Soares da Silva,
+    Robson Carlos,
+    Silas André Ferreira Alvarenga.</note>
+      <xloc>320</xloc>
+      <yloc>112</yloc>
+      <width>289</width>
+      <heigth>166</heigth>
+      <fontname>Segoe UI</fontname>
+      <fontsize>14</fontsize>
+      <fontbold>N</fontbold>
+      <fontitalic>N</fontitalic>
+      <fontcolorred>14</fontcolorred>
+      <fontcolorgreen>58</fontcolorgreen>
+      <fontcolorblue>90</fontcolorblue>
+      <backgroundcolorred>255</backgroundcolorred>
+      <backgroundcolorgreen>128</backgroundcolorgreen>
+      <backgroundcolorblue>128</backgroundcolorblue>
+      <bordercolorred>14</bordercolorred>
+      <bordercolorgreen>58</bordercolorgreen>
+      <bordercolorblue>90</bordercolorblue>
+    </notepad>
+  </notepads>
+  <attributes/>
+</workflow>
